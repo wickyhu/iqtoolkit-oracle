@@ -3,8 +3,8 @@
 echo Cleaning ...
 
 call deldir IQToolkit\obj
-call deldir IQToolkit\debug
-call deldir IQToolkit\release
+call deldir IQToolkit\bin\debug
+call deldir IQToolkit\bin\release
 
 call deldir IQToolkit.Data\obj
 call deldir IQToolkit.Data\bin\debug
