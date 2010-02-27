@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("WiCKY Hu")]
 [assembly: AssemblyProduct("IQToolkit.Data.OracleClient")]
-[assembly: AssemblyCopyright("Copyright © WiCKY Hu 2009")]
+[assembly: AssemblyCopyright("Copyright © WiCKY Hu 2009-9999")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

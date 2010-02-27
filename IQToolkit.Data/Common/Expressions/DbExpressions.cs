@@ -318,7 +318,8 @@ namespace IQToolkit.Data.Common
             //wicky.start
             if (this.from == null)
             {
-                this.from = new TableExpression(new TableAlias(), null, "DUAL");
+                this.from = new TableExpression(alias == null ? new TableAlias() : alias, null, "DUAL");
+                
             }
             //wicky.end
         }

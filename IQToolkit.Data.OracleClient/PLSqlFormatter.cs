@@ -26,7 +26,7 @@ namespace IQToolkit.Data.OracleClient
             formatter.Visit(expression);
             return formatter.ToString();
         }
-
+        
         protected override void WriteParameterName(string name)
         {
             this.Write(":");
@@ -622,45 +622,59 @@ namespace IQToolkit.Data.OracleClient
             }
             this.Write("END IF;");
             return ifx;
-        }        
-
-        //protected override Expression VisitBlock(BlockCommand block)
-        //{
-        //    if (!this.Language.AllowsMultipleCommands)
-        //    {
-        //        return base.VisitBlock(block);
-        //    }
-
-        //    for (int i = 0, n = block.Commands.Count; i < n; i++)
-        //    {
-        //        if (i > 0)
-        //        {
-        //            this.WriteLine(Indentation.Same);
-        //            this.WriteLine(Indentation.Same);
-        //        }
-        //        this.VisitStatement(block.Commands[i]);
-        //        //this.Write(";");
-        //    }
-        //    return block;
-        //}
+        }
 
         /*
+        protected override Expression VisitBlock(BlockCommand block)
+        {
+            if (!this.Language.AllowsMultipleCommands)
+            {
+                return base.VisitBlock(block);
+            }
+
+            this.Write("DECLARE");
+            this.WriteLine(Indentation.Same);
+            for (int i = 0, n = block.Commands.Count; i < n; i++)
+            {
+                if (block.Commands[i] is DeclarationCommand)
+                {
+                    DeclarationCommand decl = (DeclarationCommand)block.Commands[i];
+                    if (decl.Variables.Count > 0)
+                    {
+                        this.WriteLine(Indentation.Same);
+                        for (int i1 = 0, n1 = decl.Variables.Count; i1 < n1; i1++)
+                        {
+                            var v = decl.Variables[i1];
+                            this.Write(v.Name);
+                            this.Write(" ");
+                            this.Write(this.Language.TypeSystem.GetVariableDeclaration(v.QueryType, false));
+                            this.Write(";");
+                            this.WriteLine(Indentation.Same);
+                        }
+                    }
+                }
+            }
+
+            this.Write("BEGIN");
+            this.WriteLine(Indentation.Same);
+            for (int i = 0, n = block.Commands.Count; i < n; i++)
+            {
+                this.WriteLine(Indentation.Same);
+                this.VisitStatement(block.Commands[i]);
+                this.Write(";");
+            }
+
+            this.WriteLine(Indentation.Same);
+            this.Write("END;");
+            this.WriteLine(Indentation.Same);
+            return block;
+        }
+
         protected override Expression VisitDeclaration(DeclarationCommand decl)
         {
             if (!this.Language.AllowsMultipleCommands)
             {
                 return base.VisitDeclaration(decl);
-            }
-
-            for (int i = 0, n = decl.Variables.Count; i < n; i++)
-            {
-                var v = decl.Variables[i];
-                if (i > 0)
-                    this.WriteLine(Indentation.Same);
-                this.Write("DECLARE @");
-                this.Write(v.Name);
-                this.Write(" ");
-                this.Write(this.Language.TypeSystem.GetVariableDeclaration(v.QueryType, false));
             }
             if (decl.Source != null)
             {
@@ -670,10 +684,9 @@ namespace IQToolkit.Data.OracleClient
                 {
                     if (i > 0)
                         this.Write(", ");
-                    this.Write("@");
-                    this.Write(decl.Variables[i].Name);
-                    this.Write(" = ");
                     this.Visit(decl.Source.Columns[i].Expression);
+                    this.Write(" INTO V_");
+                    this.Write(decl.Variables[i].Name);
                 }
                 if (decl.Source.From != null)
                 {
@@ -696,7 +709,7 @@ namespace IQToolkit.Data.OracleClient
                     if (v.Expression != null)
                     {
                         this.WriteLine(Indentation.Same);
-                        this.Write("SET @");
+                        this.Write("V_");
                         this.Write(v.Name);
                         this.Write(" = ");
                         this.Visit(v.Expression);

@@ -170,7 +170,17 @@ namespace Test
                     }
                     );
 
-            AssertTrue(nUpdated == 3);
+            //wicky.start
+            //AssertTrue(nUpdated == 3);
+            if (provider.Language.AllowsMultipleCommands)
+            {
+                AssertValue(3, nUpdated);
+            }
+            else
+            {
+                AssertValue(1, nUpdated);
+            }
+            //wicky.end
 
             var entity = db.MultiTableEntities.SingleOrDefault(m => m.ID == id);
             AssertTrue(entity != null);
@@ -304,7 +314,17 @@ namespace Test
 
             int nDeleted = db.MultiTableEntities.Delete(entity);
 
-            AssertValue(3, nDeleted);
+            //wicky.start
+            //AssertValue(3, nDeleted);
+            if (provider.Language.AllowsMultipleCommands)
+            {
+                AssertValue(3, nDeleted);
+            }
+            else
+            {
+                AssertValue(1, nDeleted);
+            }
+            //wicky.end
 
             AssertFalse(db.MultiTableEntities.Any(m => m.ID == entity.ID));        
         }

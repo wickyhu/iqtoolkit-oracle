@@ -17,7 +17,7 @@ namespace IQToolkit.Data.OracleClient
 
     public class OracleQueryProvider : DbEntityProvider
     {
-        bool? allowMulitpleActiveResultSets;
+        //bool? allowMulitpleActiveResultSets;
 
         public OracleQueryProvider(OracleConnection connection, QueryMapping mapping, QueryPolicy policy)
             : base(connection, PLSqlLanguage.Default, mapping, policy)
@@ -33,13 +33,14 @@ namespace IQToolkit.Data.OracleClient
         {
             get
             {
-                if (this.allowMulitpleActiveResultSets == null)
-                {
-                    var builder = new OracleConnectionStringBuilder(this.Connection.ConnectionString);
-                    var result = builder.ContainsKey("MultipleActiveResultSets") ? builder["MultipleActiveResultSets"] : null;
-                    this.allowMulitpleActiveResultSets = (result != null && result.GetType() == typeof(bool) && (bool)result);
-                }
-                return (bool)this.allowMulitpleActiveResultSets;
+                return false;
+                //if (this.allowMulitpleActiveResultSets == null)
+                //{
+                //    var builder = new OracleConnectionStringBuilder(this.Connection.ConnectionString);
+                //    var result = builder.ContainsKey("MultipleActiveResultSets") ? builder["MultipleActiveResultSets"] : null;
+                //    this.allowMulitpleActiveResultSets = (result != null && result.GetType() == typeof(bool) && (bool)result);
+                //}
+                //return (bool)this.allowMulitpleActiveResultSets;
             }
         }
 

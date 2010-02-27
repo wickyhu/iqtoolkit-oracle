@@ -15,12 +15,16 @@ namespace Test
 {
     class Program
     {
+        static bool logEnabled = false;
+
         static void Main(string[] args)
         {
-            string providerName = ConfigurationManager.ConnectionStrings["Oracle"].ProviderName;
-            string connectionString = ConfigurationManager.ConnectionStrings["Oracle"].ConnectionString;
-            var provider = DbEntityProvider.From("IQToolkit.Data.OracleClient", connectionString, "Test.NorthwindWithAttributes");
-            
+            string connectionStringName = "Oracle";
+            string adoProviderName = "IQToolkit.Data.OracleClient";
+
+            string providerName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
+            string connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+            var provider = DbEntityProvider.From(adoProviderName, connectionString, "Test.NorthwindWithAttributes");
 
             //var provider = DbEntityProvider.From(@"c:\data\Northwind.mdf", "Test.NorthwindWithAttributes");
             //var provider = DbEntityProvider.From(@"c:\data\Northwind.accdb", "Test.NorthwindWithAttributes");
@@ -42,12 +46,17 @@ namespace Test
                 Console.WriteLine("5 = NorthwindPerfTests");
                 Console.WriteLine("log on/off = Turn on/off Log output");
                 Console.WriteLine("q = Exit");
-                string selection = Console.In.ReadLine();
+                
+                string selection = Console.In.ReadLine();                
                 cont = RunTest(provider, selection);
+
+                //provider.Log = Console.Out;
+                //MultiTableTests.Run(new MultiTableContext(provider.New(new AttributeMapping(typeof(MultiTableContext)))), "TestUpdate");
+                //Console.ReadLine();
+                //cont = false;
             }
         }
 
-        static bool logEnabled = false;
         private static bool RunTest(DbEntityProvider provider, string selection)
         {
             if (selection.Equals("q", StringComparison.OrdinalIgnoreCase)) 
