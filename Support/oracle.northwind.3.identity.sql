@@ -23,6 +23,20 @@ END;
 /
 
 
+CREATE OR REPLACE TRIGGER employees_insert
+ BEFORE
+  INSERT
+ ON employees
+REFERENCING NEW AS NEW OLD AS OLD
+ FOR EACH ROW
+BEGIN
+   SELECT nextid.NEXTVAL
+     INTO :NEW.employeeid
+     FROM DUAL;
+END;
+/
+
+
 CREATE OR REPLACE TRIGGER testtable1_insert
  BEFORE
   INSERT
