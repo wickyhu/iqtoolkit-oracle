@@ -75,6 +75,10 @@
       <Project>{01A00CBF-D30C-45DA-B85A-0F3F036DBBC3}</Project>
       <Name>IQToolkit.Data.OracleClient</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IQToolkit.Data.SqlClient\IQToolkit.Data.SqlClient.csproj">
+      <Project>{3F003957-1B67-440B-BAFE-C2B32886A429}</Project>
+      <Name>IQToolkit.Data.SqlClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IQToolkit.Data\IQToolkit.Data.csproj">
       <Project>{3A356510-9C25-4A94-87B9-EEB31B6A1303}</Project>
       <Name>IQToolkit.Data</Name>
