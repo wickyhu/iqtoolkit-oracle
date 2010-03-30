@@ -171,7 +171,10 @@ namespace IQToolkit.Data.Common
             string name;
             if (!this.aliases.TryGetValue(alias, out name))
             {
-                name = "A" + alias.GetHashCode() + "?";
+                //wicky.start
+                //name = "A" + alias.GetHashCode() + "?";
+                name = "A" + alias.GetHashCode();
+                //wicky.end
                 this.aliases.Add(alias, name);
             }
             return name;

@@ -64,32 +64,6 @@ ADD CONSTRAINT pk_employees PRIMARY KEY (employeeid)
 USING INDEX
 /
 
-DROP TABLE "ORDER DETAILS" CASCADE CONSTRAINTS
-/
-
-CREATE TABLE "ORDER DETAILS"
-    (orderid                        NUMBER(*,0) NOT NULL,
-    productid                      NUMBER(*,0) NOT NULL,
-    unitprice                      NUMBER(19,4) NOT NULL,
-    quantity                       NUMBER(*,0) NOT NULL,
-    discount                       FLOAT(126) NOT NULL)
-/
-
-ALTER TABLE "ORDER DETAILS"
-ADD CONSTRAINT pk_order_details PRIMARY KEY (orderid, productid)
-USING INDEX
-/
-
-
-
-ALTER TABLE "ORDER DETAILS"
-ADD CONSTRAINT fk_orders FOREIGN KEY (orderid)
-REFERENCES orders (orderid)
-/
-ALTER TABLE "ORDER DETAILS"
-ADD CONSTRAINT fk_products FOREIGN KEY (productid)
-REFERENCES products (productid)
-/
 DROP TABLE orders CASCADE CONSTRAINTS
 /
 
@@ -120,6 +94,8 @@ ALTER TABLE orders
 ADD CONSTRAINT fk_customers FOREIGN KEY (customerid)
 REFERENCES customers (customerid)
 /
+
+
 DROP TABLE products CASCADE CONSTRAINTS
 /
 
@@ -140,6 +116,32 @@ ALTER TABLE products
 ADD CONSTRAINT pk_products PRIMARY KEY (productid)
 USING INDEX
 /
+
+DROP TABLE "ORDER DETAILS" CASCADE CONSTRAINTS
+/
+
+CREATE TABLE "ORDER DETAILS"
+    (orderid                        NUMBER(*,0) NOT NULL,
+    productid                      NUMBER(*,0) NOT NULL,
+    unitprice                      NUMBER(19,4) NOT NULL,
+    quantity                       NUMBER(*,0) NOT NULL,
+    discount                       FLOAT(126) NOT NULL)
+/
+
+ALTER TABLE "ORDER DETAILS"
+ADD CONSTRAINT pk_order_details PRIMARY KEY (orderid, productid)
+USING INDEX
+/
+
+ALTER TABLE "ORDER DETAILS"
+ADD CONSTRAINT fk_orders FOREIGN KEY (orderid)
+REFERENCES orders (orderid)
+/
+ALTER TABLE "ORDER DETAILS"
+ADD CONSTRAINT fk_products FOREIGN KEY (productid)
+REFERENCES products (productid)
+/
+
 
 DROP TABLE region CASCADE CONSTRAINTS
 /

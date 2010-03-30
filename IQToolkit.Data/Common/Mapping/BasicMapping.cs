@@ -502,7 +502,7 @@ namespace IQToolkit.Data.Common
             return result;
         }
 
-        private IEnumerable<EntityAssignment> MapAssignments(IEnumerable<EntityAssignment> assignments, Type entityType)
+        protected IEnumerable<EntityAssignment> MapAssignments(IEnumerable<EntityAssignment> assignments, Type entityType)
         {
             foreach (var assign in assignments)
             {
@@ -622,7 +622,7 @@ namespace IQToolkit.Data.Common
         }
 
 
-        private IEnumerable<EntityAssignment> GetAssignments(Expression newOrMemberInit)
+        protected virtual IEnumerable<EntityAssignment> GetAssignments(Expression newOrMemberInit)
         {
             var assignments = new List<EntityAssignment>();
             var minit = newOrMemberInit as MemberInitExpression;
