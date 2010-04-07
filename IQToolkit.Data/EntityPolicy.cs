@@ -18,7 +18,7 @@ namespace IQToolkit.Data
 
     public class EntityPolicy : QueryPolicy
     {
-        HashSet<MemberInfo> included = new HashSet<MemberInfo>();
+        protected HashSet<MemberInfo> included = new HashSet<MemberInfo>();
         HashSet<MemberInfo> deferred = new HashSet<MemberInfo>();
         Dictionary<MemberInfo, List<LambdaExpression>> operations = new Dictionary<MemberInfo, List<LambdaExpression>>();
 
