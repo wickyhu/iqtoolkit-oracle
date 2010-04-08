@@ -44,7 +44,7 @@ namespace IQToolkit.Data.OracleClient
             }
             else if (name.IndexOf('.') > 0)
             {
-                return "\"" + string.Join("].[", name.Split(splitChars, StringSplitOptions.RemoveEmptyEntries)) + "\"";
+                return "\"" + string.Join("\".\"", name.Split(splitChars, StringSplitOptions.RemoveEmptyEntries)) + "\"";
             }
             else
             {
