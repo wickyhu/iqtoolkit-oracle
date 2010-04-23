@@ -4,30 +4,24 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
-using System.Data.OracleClient;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace IQToolkit.Data.OracleClient
+namespace IQToolkit.Data.OracleCore
 {
     using IQToolkit.Data.Common;
-
-    public class OracleQueryProvider : DbEntityProvider
-    {
+    
+    public class OracleEntityProvider : DbEntityProvider
+    {        
         //bool? allowMulitpleActiveResultSets;
 
-        public OracleQueryProvider(OracleConnection connection, QueryMapping mapping, QueryPolicy policy)
+        public OracleEntityProvider(DbConnection connection, QueryMapping mapping, QueryPolicy policy)
             : base(connection, PLSqlLanguage.Default, mapping, policy)
         {
         }
-
-        public override DbEntityProvider New(DbConnection connection, QueryMapping mapping, QueryPolicy policy)
-        {
-            return new OracleQueryProvider((OracleConnection)connection, mapping, policy);
-        }    
         
         public bool AllowsMultipleActiveResultSets
         {
@@ -51,9 +45,9 @@ namespace IQToolkit.Data.OracleClient
 
         new class Executor : DbEntityProvider.Executor
         {
-            OracleQueryProvider provider;
+            OracleEntityProvider provider;
 
-            public Executor(OracleQueryProvider provider)
+            public Executor(OracleEntityProvider provider)
                 : base(provider)
             {
                 this.provider = provider;
@@ -74,7 +68,8 @@ namespace IQToolkit.Data.OracleClient
                 {
                     len = Int32.MaxValue;
                 }
-                var p = ((OracleCommand)command).Parameters.Add(":" + parameter.Name, ToOracleType(sqlType.SqlDbType), len);
+                //var p = ((OracleCommand)command).Parameters.Add(":" + parameter.Name, ToOracleType(sqlType.SqlDbType), len);                
+                var p = provider.AdoProvider.CreateParameter(":" + parameter.Name, sqlType.SqlDbType, len);
                 /*
                 if (sqlType.Precision != 0)
                     p.Precision = (byte)sqlType.Precision;
@@ -82,6 +77,7 @@ namespace IQToolkit.Data.OracleClient
                     p.Scale = (byte)sqlType.Scale;
                 */
                 p.Value = value ?? DBNull.Value;
+                command.Parameters.Add(p);
             }
 
             public override IEnumerable<int> ExecuteBatch(QueryCommand query, IEnumerable<object[]> paramSets, int batchSize, bool stream)
@@ -104,10 +100,10 @@ namespace IQToolkit.Data.OracleClient
                     this.StopUsingConnection();
                 }
             }
-
+            
             private IEnumerable<int> ExecuteBatch(QueryCommand query, IEnumerable<object[]> paramSets, int batchSize)
             {
-                OracleCommand cmd = (OracleCommand)this.GetCommand(query, null);
+                DbCommand cmd = this.GetCommand(query, null);
                 DataTable dataTable = new DataTable();
                 for (int i = 0, n = query.Parameters.Count; i < n; i++)
                 {
@@ -115,7 +111,7 @@ namespace IQToolkit.Data.OracleClient
                     cmd.Parameters[i].SourceColumn = qp.Name;
                     dataTable.Columns.Add(qp.Name, TypeHelper.GetNonNullableType(qp.Type));
                 }
-                OracleDataAdapter dataAdapter = new OracleDataAdapter();
+                DbDataAdapter dataAdapter = provider.AdoProvider.CreateDataAdapter();
                 dataAdapter.InsertCommand = cmd;
                 dataAdapter.InsertCommand.UpdatedRowSource = UpdateRowSource.None;
                 dataAdapter.UpdateBatchSize = batchSize;
@@ -153,64 +149,17 @@ namespace IQToolkit.Data.OracleClient
                 this.LogMessage(string.Format("-- End SQL Batching --"));
                 this.LogMessage("");
             }
+            
 
         }//end of Executor
 
-        public static OracleType ToOracleType(SqlDbType dbType)
+        public virtual AdoProvider AdoProvider
         {
-            switch (dbType)
+            get
             {
-                case SqlDbType.BigInt:
-                    return OracleType.Number;
-                case SqlDbType.Binary:
-                    return OracleType.Blob;
-                case SqlDbType.Bit:
-                    return OracleType.Byte;
-                case SqlDbType.NChar:
-                    return OracleType.NChar;
-                case SqlDbType.Char:
-                    return OracleType.Char;
-                case SqlDbType.Date:
-                    return OracleType.DateTime;
-                case SqlDbType.DateTime:
-                case SqlDbType.SmallDateTime:
-                    return OracleType.DateTime;
-                case SqlDbType.Decimal:
-                    return OracleType.Number;
-                case SqlDbType.Float:
-                    return OracleType.Float;
-                case SqlDbType.Image:
-                    return OracleType.Blob;
-                case SqlDbType.Int:
-                    return OracleType.Int32;
-                case SqlDbType.Money:
-                case SqlDbType.SmallMoney:
-                    return OracleType.Number;
-                case SqlDbType.NVarChar:
-                    return OracleType.NVarChar;
-                case SqlDbType.VarChar:
-                    return OracleType.VarChar;
-                case SqlDbType.SmallInt:
-                    return OracleType.Int16;
-                case SqlDbType.NText:
-                case SqlDbType.Text:
-                    return OracleType.LongVarChar;
-                case SqlDbType.Time:
-                    return OracleType.Timestamp;
-                case SqlDbType.Timestamp:
-                    return OracleType.Timestamp;
-                case SqlDbType.TinyInt:
-                    return OracleType.Byte;
-                case SqlDbType.UniqueIdentifier:
-                    return OracleType.VarChar;
-                case SqlDbType.VarBinary:
-                    return OracleType.LongRaw;
-                case SqlDbType.Xml:
-                    return OracleType.LongVarChar;
-                default:
-                    throw new NotSupportedException(string.Format("The SQL type '{0}' is not supported", dbType));
+                throw new NotImplementedException("AdoProvider need to be implemented.");
             }
         }
-
+       
     }
 }

@@ -130,5 +130,6 @@
   -->
   <PropertyGroup>
     <PreBuildEvent>$(ProjectDir)CopyProviders.cmd $(OutDir) $(ProjectDir)</PreBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)\\IQToolkit.Data.OracleClient.dll $(TargetDir)\IQToolkit.Data.ODP.dll /y</PostBuildEvent>
   </PropertyGroup>
 </Project>

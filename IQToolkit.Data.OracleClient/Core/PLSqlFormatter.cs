@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using IQToolkit.Data.Common;
 
-namespace IQToolkit.Data.OracleClient
+namespace IQToolkit.Data.OracleCore
 {
     public class PLSqlFormatter : SqlFormatter
     {

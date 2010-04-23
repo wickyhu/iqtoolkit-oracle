@@ -8,7 +8,7 @@
     <ProjectGuid>{01A00CBF-D30C-45DA-B85A-0F3F036DBBC3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IQToolkit.Data.OracleClient</RootNamespace>
+    <RootNamespace>IQToolkit.Data.OracleCore</RootNamespace>
     <AssemblyName>IQToolkit.Data.OracleClient</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -44,15 +44,18 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.OracleClient" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OracleQueryProvider.cs" />
-    <Compile Include="PLSqlFormatter.cs" />
-    <Compile Include="PLSqlLanguage.cs" />
+    <Compile Include="Core\AdoProvider.cs" />
+    <Compile Include="OracleClient\AdoOracleClientProvider.cs" />
+    <Compile Include="ODP\AdoOracleDataProvider.cs" />
+    <Compile Include="ODP\ODPQueryProvider.cs" />
+    <Compile Include="Core\OracleEntityProvider.cs" />
+    <Compile Include="Core\PLSqlFormatter.cs" />
+    <Compile Include="Core\PLSqlLanguage.cs" />
+    <Compile Include="OracleClient\OracleQueryProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,4 +79,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetDir)$(TargetFileName) $(TargetDir)\IQToolkit.Data.ODP.dll /y</PostBuildEvent>
+  </PropertyGroup>
 </Project>

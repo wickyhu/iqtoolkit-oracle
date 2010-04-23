@@ -3,13 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Common;
-using System.Data.OracleClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace IQToolkit.Data.OracleClient
+namespace IQToolkit.Data.OracleCore
 {
     using IQToolkit.Data.Common;
 

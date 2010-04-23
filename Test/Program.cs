@@ -16,16 +16,10 @@ namespace Test
     class Program
     {
         static bool logEnabled = false;
+        static string adoProviderName = "IQToolkit.Data.OracleClient";
 
         static void Main(string[] args)
         {
-            string connectionStringName = "Oracle";
-            string adoProviderName = "IQToolkit.Data.OracleClient";
-
-            string providerName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
-            string connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
-            var provider = DbEntityProvider.From(adoProviderName, connectionString, "Test.NorthwindWithAttributes");
-
             //var provider = DbEntityProvider.From(@"c:\data\Northwind.mdf", "Test.NorthwindWithAttributes");
             //var provider = DbEntityProvider.From(@"c:\data\Northwind.accdb", "Test.NorthwindWithAttributes");
             //var provider = DbEntityProvider.From(@"c:\data\Northwind.mdb", "Test.NorthwindWithAttributes");
@@ -45,10 +39,12 @@ namespace Test
                 Console.WriteLine("4 = MultiTableTests");
                 Console.WriteLine("5 = NorthwindPerfTests");
                 Console.WriteLine("log on/off = Turn on/off Log output");
+                Console.WriteLine("s = Switch OracleClient/ODP");
                 Console.WriteLine("q = Exit");
+                Console.WriteLine("Current Provider: " + adoProviderName);
                 
-                string selection = Console.In.ReadLine();                
-                cont = RunTest(provider, selection);
+                string selection = Console.In.ReadLine();
+                cont = RunTest(selection);
 
                 //provider.Log = Console.Out;
                 //MultiTableTests.Run(new MultiTableContext(provider.New(new AttributeMapping(typeof(MultiTableContext)))), "TestUpdate");
@@ -57,10 +53,25 @@ namespace Test
             }
         }
 
-        private static bool RunTest(DbEntityProvider provider, string selection)
+        private static bool RunTest(string selection)
         {
             if (selection.Equals("q", StringComparison.OrdinalIgnoreCase)) 
                 return false;
+
+            if (selection.Equals("s", StringComparison.OrdinalIgnoreCase)) 
+            {
+                if(adoProviderName == "IQToolkit.Data.OracleClient")
+                    adoProviderName = "IQToolkit.Data.ODP";
+                else 
+                    adoProviderName = "IQToolkit.Data.OracleClient";
+                return true;
+            }
+
+            string connectionStringName = "Oracle";
+            string providerName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
+            string connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+            
+            var provider = DbEntityProvider.From(adoProviderName, connectionString, "Test.NorthwindWithAttributes");
 
             if (selection.StartsWith("log", StringComparison.OrdinalIgnoreCase))
             {

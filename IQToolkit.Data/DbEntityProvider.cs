@@ -184,6 +184,12 @@ namespace IQToolkit.Data
                         return arg.ParameterType;
                 }
             }
+
+            PropertyInfo pi = providerType.GetProperty("AdoConnectionType", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+            if (pi != null)
+            {
+                return (Type)pi.GetValue(null, null);
+            }
             return null;
         }
 
