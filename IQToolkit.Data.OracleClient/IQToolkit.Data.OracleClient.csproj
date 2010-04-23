@@ -8,7 +8,7 @@
     <ProjectGuid>{01A00CBF-D30C-45DA-B85A-0F3F036DBBC3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IQToolkit.Data.OracleCore</RootNamespace>
+    <RootNamespace>IQToolkit.Data</RootNamespace>
     <AssemblyName>IQToolkit.Data.OracleClient</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\AdoProvider.cs" />
+    <Compile Include="Core\OracleExecutor.cs" />
+    <Compile Include="ODP\ODPExecutor.cs" />
     <Compile Include="OracleClient\AdoOracleClientProvider.cs" />
     <Compile Include="ODP\AdoOracleDataProvider.cs" />
     <Compile Include="ODP\ODPQueryProvider.cs" />

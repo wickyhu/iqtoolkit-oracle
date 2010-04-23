@@ -185,11 +185,14 @@ namespace IQToolkit.Data
                 }
             }
 
+            //wicky.start
             PropertyInfo pi = providerType.GetProperty("AdoConnectionType", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
             if (pi != null)
             {
                 return (Type)pi.GetValue(null, null);
             }
+            //wicky.end
+
             return null;
         }
 

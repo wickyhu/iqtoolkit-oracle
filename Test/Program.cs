@@ -20,6 +20,19 @@ namespace Test
 
         static void Main(string[] args)
         {
+
+            //string connectionStringName = "Oracle";
+            //string providerName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
+            //string connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+            //adoProviderName = "IQToolkit.Data.ODP";
+            //var provider = DbEntityProvider.From(adoProviderName, connectionString, "Test.NorthwindWithAttributes");
+            //var db = new Northwind(provider);                
+            //provider.Log = Console.Out;
+            ////MultiTableTests.Run(new MultiTableContext(provider.New(new AttributeMapping(typeof(MultiTableContext)))), "TestUpdate");
+            //NorthwindExecutionTests.Run(db, "TestStringIndexOf");
+            //Console.ReadLine();
+            //return;
+
             //var provider = DbEntityProvider.From(@"c:\data\Northwind.mdf", "Test.NorthwindWithAttributes");
             //var provider = DbEntityProvider.From(@"c:\data\Northwind.accdb", "Test.NorthwindWithAttributes");
             //var provider = DbEntityProvider.From(@"c:\data\Northwind.mdb", "Test.NorthwindWithAttributes");
@@ -45,11 +58,6 @@ namespace Test
                 
                 string selection = Console.In.ReadLine();
                 cont = RunTest(selection);
-
-                //provider.Log = Console.Out;
-                //MultiTableTests.Run(new MultiTableContext(provider.New(new AttributeMapping(typeof(MultiTableContext)))), "TestUpdate");
-                //Console.ReadLine();
-                //cont = false;
             }
         }
 
@@ -72,6 +80,7 @@ namespace Test
             string connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
             
             var provider = DbEntityProvider.From(adoProviderName, connectionString, "Test.NorthwindWithAttributes");
+
 
             if (selection.StartsWith("log", StringComparison.OrdinalIgnoreCase))
             {
@@ -97,7 +106,8 @@ namespace Test
             //provider.Cache = new QueryCache(5);
             try
             {
-                var db = new Northwind(provider);
+                var db = new Northwind(provider);                
+
                 if (selection.Contains("0") || selection.Contains("1"))
                     NorthwindTranslationTests.Run(db, true);
                 if (selection.Contains("0") || selection.Contains("2"))

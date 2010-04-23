@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data;
+using System.Data.Common;
+using System.Reflection;
+using IQToolkit.Data.Common;
+using IQToolkit.Data.OracleCore;
+
+namespace IQToolkit.Data.ODP
+{
+    public class ODPExecutor : OracleExecutor
+    {
+        public ODPExecutor(OracleEntityProvider provider)
+            : base(provider)
+        {            
+        }
+
+        protected override DbCommand GetCommand(QueryCommand query, object[] paramValues)
+        {
+            DbCommand cmd = base.GetCommand(query, paramValues);
+            if (_bindByNameProperty == null)
+            {
+                _bindByNameProperty = cmd.GetType().GetProperty("BindByName");
+            }
+            _bindByNameProperty.SetValue(cmd, true);
+            return cmd;
+        }
+
+        static PropertyInfo _bindByNameProperty;
+
+    }
+}

@@ -18,6 +18,11 @@ namespace IQToolkit.Data.ODP
         {            
         }
 
+        protected override QueryExecutor CreateExecutor()
+        {
+            return new ODPExecutor(this);
+        }    
+
         public override AdoProvider AdoProvider
         {
             get

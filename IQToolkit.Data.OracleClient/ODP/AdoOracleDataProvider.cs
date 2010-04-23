@@ -63,8 +63,8 @@ namespace IQToolkit.Data.ODP
                 }
                 return _assembly;
             }
-        }
-
+        }        
+        
         private static AdoOracleDataProvider _default;
         public static AdoOracleDataProvider Default
         {
