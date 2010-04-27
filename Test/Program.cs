@@ -54,7 +54,12 @@ namespace Test
                 Console.WriteLine("log on/off = Turn on/off Log output");
                 Console.WriteLine("s = Switch OracleClient/ODP");
                 Console.WriteLine("q = Exit");
-                Console.WriteLine("Current Provider: " + adoProviderName);
+                Console.Write("Current Provider: ");
+                ConsoleColor saveCC = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine(adoProviderName);
+                Console.ForegroundColor = saveCC;
+                
                 
                 string selection = Console.In.ReadLine();
                 cont = RunTest(selection);

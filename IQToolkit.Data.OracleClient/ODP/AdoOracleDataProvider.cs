@@ -54,12 +54,12 @@ namespace IQToolkit.Data.ODP
             {
                 if (_assembly == null)
                 {
-                    _assembly = Assembly.Load("Oracle.DataAccess, Version=2.111.7.20, Culture=neutral, PublicKeyToken=89b483f429c47342");
+                    //_assembly = Assembly.Load("Oracle.DataAccess, Version=2.111.7.20, Culture=neutral, PublicKeyToken=89b483f429c47342");
 
                     //LoadWithPartialName still in .Net 4.0
-//#pragma warning disable 618
-//                    _assembly = Assembly.LoadWithPartialName("Oracle.DataAccess");
-//#pragma warning restore 618
+#pragma warning disable 618
+                    _assembly = Assembly.LoadWithPartialName("Oracle.DataAccess");
+#pragma warning restore 618
                 }
                 return _assembly;
             }

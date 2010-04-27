@@ -20,15 +20,21 @@ namespace IQToolkit.Data.ODP
         protected override DbCommand GetCommand(QueryCommand query, object[] paramValues)
         {
             DbCommand cmd = base.GetCommand(query, paramValues);
+
             if (_bindByNameProperty == null)
             {
                 _bindByNameProperty = cmd.GetType().GetProperty("BindByName");
+                //_notificationAutoEnlistProperty = cmd.GetType().GetProperty("NotificationAutoEnlist");
             }
             _bindByNameProperty.SetValue(cmd, true);
+            //_notificationAutoEnlistProperty.SetValue(cmd, false);            
+
             return cmd;
         }
 
+        
         static PropertyInfo _bindByNameProperty;
+        //static PropertyInfo _notificationAutoEnlistProperty;
 
     }
 }
